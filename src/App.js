@@ -1,14 +1,15 @@
-import logo from "./logo.svg";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
 import { CustomRouter } from "./router";
 import "./App.scss";
+import React from "react";
+import { Context, initialContext } from "./context";
 
 function App() {
   return (
-    <div className="App">
-      <CustomRouter />
-    </div>
+    <Context.Provider value={initialContext}>
+      <div className="App">
+        <CustomRouter />
+      </div>
+    </Context.Provider>
   );
 }
 
