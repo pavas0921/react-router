@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { CardList } from "../components/CardList";
+import { Context } from "../context";
 
 const Pokemon = () => {
   const [characters, setCharacters] = useState([]);
+  const context = useContext(Context);
+  console.log("*******", context);
   const [loader, setLoader] = useState(true);
 
   const getOnePokemon = async (url) => {
@@ -20,6 +23,8 @@ const Pokemon = () => {
     const url = "https://pokeapi.co/api/v2/pokemon";
     const response = await fetch(url);
     const data = await response.json();
+    context.pokemon.characters = data.results;
+    context.redirectDetailsRoute = "/pokemon";
 
     /*await data.results.forEach(async (item) => {
       const image = await getOnePokemon(item.url);
@@ -28,7 +33,6 @@ const Pokemon = () => {
     });*/
 
     for (let item of data.results) {
-      console.log("For of get value of each item", item);
       const image = await getOnePokemon(item.url);
       pokemons.push({ name: item.name, image: image });
     }
