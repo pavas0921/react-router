@@ -14,7 +14,7 @@ const Pokemon = () => {
   const getOnePokemon = async (url) => {
     const response = await fetch(url);
     const data = await response.json();
-    return data.sprites.front_shiny;
+    return data;
   };
 
   //Async/Await
@@ -23,18 +23,20 @@ const Pokemon = () => {
     const url = "https://pokeapi.co/api/v2/pokemon";
     const response = await fetch(url);
     const data = await response.json();
-    context.pokemon.characters = data.results;
-    context.redirectDetailsRoute = "/pokemon";
-
-    /*await data.results.forEach(async (item) => {
-      const image = await getOnePokemon(item.url);
-      pokemons.push({ name: item.name, image });
-      console.log("Foreach");
-    });*/
 
     for (let item of data.results) {
-      const image = await getOnePokemon(item.url);
-      pokemons.push({ name: item.name, image: image });
+      const pokemonDetails = await getOnePokemon(item.url);
+      const image = pokemonDetails.sprites.front_default;
+      pokemons.push({
+        id: pokemonDetails.id,
+        name: pokemonDetails.name,
+        weight: pokemonDetails.weight,
+        base_experience: pokemonDetails.base_experience,
+        image: image,
+      });
+      context.pokemon.characters = pokemons;
+      context.redirectDetailsRoute = "/pokemon";
+      //console.log(pokemons);
     }
 
     setLoader(false);
