@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { CardList } from "../components/CardList";
+import { Context } from "../context";
 
 const Pokemon = () => {
   const [characters, setCharacters] = useState([]);
+  const context = useContext(Context);
+  console.log("*******", context);
   const [loader, setLoader] = useState(true);
 
   const getOnePokemon = async (url) => {
     const response = await fetch(url);
     const data = await response.json();
-    return data.sprites.front_shiny;
+    return data;
   };
 
   //Async/Await
@@ -21,16 +24,19 @@ const Pokemon = () => {
     const response = await fetch(url);
     const data = await response.json();
 
-    /*await data.results.forEach(async (item) => {
-      const image = await getOnePokemon(item.url);
-      pokemons.push({ name: item.name, image });
-      console.log("Foreach");
-    });*/
-
     for (let item of data.results) {
-      console.log("For of get value of each item", item);
-      const image = await getOnePokemon(item.url);
-      pokemons.push({ name: item.name, image: image });
+      const pokemonDetails = await getOnePokemon(item.url);
+      const image = pokemonDetails.sprites.front_default;
+      pokemons.push({
+        id: pokemonDetails.id,
+        name: pokemonDetails.name,
+        weight: pokemonDetails.weight,
+        base_experience: pokemonDetails.base_experience,
+        image: image,
+      });
+      context.pokemon.characters = pokemons;
+      context.redirectDetailsRoute = "/pokemon";
+      //console.log(pokemons);
     }
 
     setLoader(false);
