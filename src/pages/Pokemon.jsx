@@ -4,47 +4,18 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { CardList } from "../components/CardList";
 import { Context } from "../context";
+import { useData } from "../hooks";
+import { getAllPokemon } from "../services/pokemonAPI";
 
 const Pokemon = () => {
-  const [characters, setCharacters] = useState([]);
+  const { data: characters } = useData([], getAllPokemon);
   const context = useContext(Context);
-  console.log("*******", context);
   const [loader, setLoader] = useState(true);
 
-  const getOnePokemon = async (url) => {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
-  };
-
-  //Async/Await
-  const getAllPokemons = async () => {
-    const pokemons = [];
-    const url = "https://pokeapi.co/api/v2/pokemon";
-    const response = await fetch(url);
-    const data = await response.json();
-
-    for (let item of data.results) {
-      const pokemonDetails = await getOnePokemon(item.url);
-      const image = pokemonDetails.sprites.front_default;
-      pokemons.push({
-        id: pokemonDetails.id,
-        name: pokemonDetails.name,
-        weight: pokemonDetails.weight,
-        base_experience: pokemonDetails.base_experience,
-        image: image,
-      });
-      context.pokemon.characters = pokemons;
-      context.redirectDetailsRoute = "/pokemon";
-      //console.log(pokemons);
-    }
-
-    setLoader(false);
-    setCharacters(pokemons);
-  };
-
   useEffect(() => {
-    getAllPokemons();
+    context.pokemon.characters = characters;
+    context.redirectDetailsRoute = "/pokemon";
+    setLoader(false);
   }, []);
 
   const renderPokemons = () => <CardList list={characters}></CardList>;
@@ -58,5 +29,4 @@ const Pokemon = () => {
     </>
   );
 };
-
 export default Pokemon;

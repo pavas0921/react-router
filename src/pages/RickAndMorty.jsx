@@ -4,26 +4,17 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { CardList } from "../components/CardList";
 import { Context } from "../context";
+import { useData } from "../hooks";
+import { getAllCharacters } from "../services/rickAndMortyAPI";
 
 const RickAndMorty = () => {
-  const [characters, setCharacters] = useState([]);
+  //const { characters } = useCharacters("ram");
+  const { data: characters } = useData([], getAllCharacters);
   const context = useContext(Context);
-  console.log("*******", context);
-
-  const getAllCharacters = () => {
-    const url = "https://rickandmortyapi.com/api/character";
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setCharacters(data.results);
-        context.rickAndMorty.characters = data.results;
-        context.redirectDetailsRoute = "/rickandmorty";
-      })
-      .catch(() => {});
-  };
 
   useEffect(() => {
-    getAllCharacters();
+    context.rickAndMorty.characters = characters;
+    context.redirectDetailsRoute = "/rickandmorty";
   }, []);
 
   return (
