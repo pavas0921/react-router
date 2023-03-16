@@ -7,7 +7,6 @@ const useData = (initalState, fn, params) => {
   const getData = async () => {
     const fetch_data = await fn(params);
     setData(fetch_data);
-    console.log("data****", data);
   };
 
   useEffect(() => {

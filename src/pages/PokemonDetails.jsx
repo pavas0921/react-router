@@ -13,40 +13,12 @@ const PokemonDetails = () => {
     `https://pokeapi.co/api/v2/pokemon/${idParam}`
   );
 
-  console.log("Poke***", poke);
-
-  //const [character, setCharacter] = useState({});
   const context = useContext(Context);
-  //const { pokemon } = context || {};
-  //const { characters } = pokemon || [];
   const { id, name, weight, base_experience, image } = poke || {};
 
   useEffect(() => {
     context.pokemon.characters = poke;
-
-    /*if (item) {
-      context.pokemon.characters = poke;
-      //setCharacter(item);
-    } else {
-      //getData(idParam);
-    }
-    //setCharacter(item);*/
   }, []);
-
-  /*const getData = async (idParam) => {
-    const url = `https://pokeapi.co/api/v2/pokemon/${idParam}`;
-    const data = await getOnePokemon(url);
-    const pokemon = {
-      id: data.id,
-      name: data.name,
-      weight: data.weight,
-      base_experience: data.base_experience,
-      image: data.sprites.front_default,
-    };
-    console.log(pokemon);
-
-    //setCharacter(pokemon);
-  };*/
 
   return (
     <PokemonDetail
