@@ -9,8 +9,6 @@ const CardList = ({ list }) => {
   const context = useContext(Context);
   const { redirectDetailsRoute } = context;
 
-  //console.log("Details context....", context);
-
   const goToDetails = (id) => {
     //Redirect to details
     navigate(`${redirectDetailsRoute}/${id}`);

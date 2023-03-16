@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../context";
 import { RAMDetail } from "../../src/components/RAMDetail";
+import { getOneCharacter } from "../services/rickAndMortyAPI";
 
 const RAMDetails = () => {
   const [character, setCharacter] = useState({});
@@ -13,8 +14,18 @@ const RAMDetails = () => {
 
   useEffect(() => {
     const item = characters.find((item) => item.id === +idParam);
+    if (item) {
+      setCharacter(item);
+    } else {
+      getData(idParam);
+    }
     setCharacter(item);
   }, []);
+
+  const getData = async (id) => {
+    const data = await getOneCharacter(id);
+    setCharacter(data);
+  };
 
   return (
     <RAMDetail
