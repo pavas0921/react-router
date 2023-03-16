@@ -16,7 +16,7 @@ const Pokemon = () => {
     context.pokemon.characters = characters;
     context.redirectDetailsRoute = "/pokemon";
     setLoader(false);
-  }, []);
+  }, [characters]);
 
   const renderPokemons = () => <CardList list={characters}></CardList>;
 

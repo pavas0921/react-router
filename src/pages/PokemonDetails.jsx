@@ -9,10 +9,11 @@ const PokemonDetails = () => {
   const { id: idParam } = useParams();
   const { data: poke } = useData(
     [],
-    getOnePokemon(`https://pokeapi.co/api/v2/pokemon/${idParam}`)
+    getOnePokemon,
+    `https://pokeapi.co/api/v2/pokemon/${idParam}`
   );
 
-  console.log(poke);
+  console.log("Poke***", poke);
 
   //const [character, setCharacter] = useState({});
   const context = useContext(Context);
